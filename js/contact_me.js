@@ -11,25 +11,19 @@ $(function() {
             event.preventDefault();
             
             // get values from FORM
-            var name = $("input#name").val();
             var email = $("input#email").val();
-            var phone = $("input#phone").val();
+            var subject = $("select#subject").val();
             var message = $("textarea#message").val();
-            var firstName = name; // For Success/Failure Message
-            // Check for white space in name for Success/Fail message
-            if (firstName.indexOf(' ') >= 0) {
-                firstName = name.split(' ').slice(0, -1).join(' ');
-            }
+            
             $.ajax({
-                url: "././mail/contact_me.php",
-                type: "POST",
-                data: {
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    message: message
-                },
+                dataType: 'jsonp',
                 cache: false,
+                url: "http://getsimpleform.com/messages/ajax?form_api_token=39c8f9e5a2de15ad63469475702522b9",
+                data: {
+                    email: email,
+                    subject: subject,
+                    message: message
+                }
                 success: function() {
                     // Enable button & show success message
                     $("#btnSubmit").attr("disabled", false);
@@ -54,6 +48,10 @@ $(function() {
                     //clear all fields
                     $('#contactForm').trigger("reset");
                 },
+            }).done(function() {
+                //callback which can be used to show a thank you message
+                //and reset the form
+                alert("Thank you, for contacting us");
             })
         },
         filter: function() {
